@@ -12,12 +12,15 @@
 #define SDL_MAIN_USE_CALLBACKS 1  /* use the callbacks instead of main() */
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+#include "chip.h"
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
+
+chip8_t* cpu;
 
 /* This function runs once at startup. */
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
@@ -27,6 +30,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
         SDL_Log("Couldn't create window and renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
+    cpu = init_chip();
     return SDL_APP_CONTINUE;
 }
 
