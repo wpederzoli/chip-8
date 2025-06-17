@@ -68,6 +68,11 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     SDL_RenderDebugText(renderer, x, y, message);
     SDL_RenderPresent(renderer);
 
+    chip_step(cpu);
+    if(cpu->PC > 0xFFF) {
+        return SDL_APP_SUCCESS;
+    }
+
     return SDL_APP_CONTINUE;
 }
 
