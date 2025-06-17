@@ -37,7 +37,7 @@ int load_rom(chip8_t* chip, const char* path) {
     return -1;
   }
 
-  fread(&chip->memory[PROGRAMS_START_ADDR], size, 1, file);
+  fread(&chip->memory[PROGRAMS_START_ADDR], 1, size, file) ;
   fclose(file);
   
   return 0;
