@@ -31,6 +31,9 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
         return SDL_APP_FAILURE;
     }
     cpu = init_chip();
+    
+    if(load_rom(cpu, "rom/cavern.ch8") != 0) return SDL_APP_FAILURE;
+    
     return SDL_APP_CONTINUE;
 }
 
@@ -71,4 +74,5 @@ SDL_AppResult SDL_AppIterate(void *appstate)
 /* This function runs once at shutdown. */
 void SDL_AppQuit(void *appstate, SDL_AppResult result)
 {
+    SDL_free(cpu);
 }
