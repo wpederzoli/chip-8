@@ -64,11 +64,11 @@ void handle_opcode(chip8_t *chip, uint16_t op, SDL_Renderer *renderer) {
     chip->PC = chip->stack[chip->SP];
     chip->SP--;
     break;
-  case JP:
-    printf("jump to address in args\n");
+  case JP: {
     uint16_t nnn = (Y << 8) | (Z << 4) | W;
     chip->PC = nnn;
     break;
+  }
   }
 }
 
