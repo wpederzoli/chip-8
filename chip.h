@@ -13,13 +13,15 @@
 
 #define ROM_MAX_S (0xFFF - 0x200 + 1)
 
+#include <stdlib.h>
+
 typedef struct {
-  unsigned char memory[RAM_S];
-  unsigned char V[REGISTERS_S]; // Registers V0 - VF
-  unsigned short I;             // Register to store memory addresses
-  unsigned short PC;            // Program Counter
-  unsigned char SP;             // Stack pointer
-  unsigned short stack[STACK_S];
+  uint8_t memory[RAM_S];
+  uint8_t V[REGISTERS_S]; // Registers V0 - VF
+  uint16_t I;             // Register to store memory addresses
+  uint16_t PC;            // Program Counter
+  uint8_t SP;             // Stack pointer
+  uint16_t stack[STACK_S];
 } chip8_t;
 
 chip8_t *init_chip();

@@ -2,7 +2,6 @@
 #include "SDL3/SDL_error.h"
 #include "SDL3/SDL_log.h"
 #include "SDL3/SDL_stdinc.h"
-#include <stdlib.h>
 
 chip8_t *init_chip() {
   chip8_t *chip = malloc(sizeof(chip8_t));
@@ -32,7 +31,7 @@ int load_rom(chip8_t *chip, const char *path) {
   rewind(file);
 
   if (size > ROM_MAX_S) {
-    printf("File is too large for this computer: %ld", size);
+    printf("File is too large for this computer: %ld\n", size);
     fclose(file);
     return -1;
   }
