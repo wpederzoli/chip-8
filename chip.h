@@ -2,6 +2,7 @@
 #define CHIP_H
 
 // 4KB RAM
+#include "SDL3/SDL_render.h"
 #define RAM_S 4096
 #define REGISTERS_S 16
 #define STACK_S 16
@@ -26,6 +27,7 @@ typedef struct {
 
 chip8_t *init_chip();
 int load_rom(chip8_t *chip, const char *path);
-void chip_step(chip8_t *chip);
+uint16_t chip_step(chip8_t *chip);
+void handle_opcode(chip8_t *chip, uint16_t opcode, SDL_Renderer *renderer);
 
 #endif

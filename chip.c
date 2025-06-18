@@ -1,7 +1,7 @@
 #include "chip.h"
-#include "SDL3/SDL_error.h"
-#include "SDL3/SDL_log.h"
-#include "SDL3/SDL_stdinc.h"
+#include "registers.h"
+#include <stdio.h>
+#include <string.h>
 
 chip8_t *init_chip() {
   chip8_t *chip = malloc(sizeof(chip8_t));
@@ -42,22 +42,39 @@ int load_rom(chip8_t *chip, const char *path) {
   return 0;
 }
 
-void chip_step(chip8_t *chip) {
+// opcodes look like 0xXYZW where:
+//  X - Category
+//  Y, Z, W - args (registers, other values, etc)...
+
+void handle_opcode(chip8_t *chip, uint16_t op, SDL_Renderer *renderer) {
+  uint8_t X = (op >> 12) & 0xF;
+  uint8_t Y = (op >> 8) & 0xF;
+  uint8_t Z = (op >> 4) & 0xF;
+  uint8_t W = op & 0xF;
+
+  switch (X) {
+  case CLS:
+    printf("Clear screen\n");
+    SDL_RenderClear(renderer);
+    // Since it is 2 bytes sized we move forward 2 steps.
+    chip->PC += 2;
+    break;
+  case RET:
+    printf("Return to top stack address\n");
+    chip->PC = chip->stack[chip->SP];
+    chip->SP--;
+    break;
+  case JP: {
+    uint16_t nnn = (Y << 8) | (Z << 4) | W;
+    chip->PC = nnn;
+    break;
+  }
+  }
+}
+
+uint16_t chip_step(chip8_t *chip) {
   uint16_t opcode = (chip->memory[chip->PC] << 8) |
                     chip->memory[chip->PC + 1]; // 2 byte opcodes
-  // opcodes look like 0xXYZW where:
-  //  X - Category
-  //  Y, Z, W - args (registers, other values, etc)...
 
-  uint8_t X = (opcode >> 12) & 0xF;
-  uint8_t Y = (opcode >> 8) & 0xF;
-  uint8_t Z = (opcode >> 4) & 0xF;
-  uint8_t W = opcode & 0xF;
-
-  // log for now
-  printf("PC: 0x%04X | Opcode: 0x%04X (X: 0x%X, Y: 0x%X, Z: 0x%X, W: 0x%X)\n",
-         chip->PC, opcode, X, Y, Z, W);
-
-  // Since it is 2 bytes sized we move forward 2 steps.
-  chip->PC += 2;
+  return opcode;
 }
