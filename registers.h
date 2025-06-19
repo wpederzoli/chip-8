@@ -8,7 +8,9 @@
 // Jump to nnn address
 #define JP 0x1
 //Set Vx = kk
-#define LD 0x6
+#define LD_VX_KK 0x6
+//Set Vx = Vy
+#define LD_VX_VY 0x0
 //Set Vx = Vx + kk
 #define ADD 0x7
 //Logical ops
@@ -19,5 +21,7 @@
 #define AND 0x2
 //Set Vx = Vx XOR Vy
 #define XOR 0x3
+//Set Vx = Vx + Vy, set VF = carry.
+#define ADD_VX_VY 0x4
 
 #endif

@@ -68,7 +68,7 @@ void handle_opcode(chip8_t *chip, uint16_t op, SDL_Renderer *renderer) {
     chip->PC = nnn;
     return;
   }
-  case LD: {
+  case LD_VX_KK: {
     chip->V[Y] = (Z << 4) | W;
     break;
   }
@@ -89,6 +89,16 @@ void handle_opcode(chip8_t *chip, uint16_t op, SDL_Renderer *renderer) {
     }
     case XOR: {
       chip->V[Y] = chip->V[Y] ^ chip->V[Z];
+      break;
+    }
+    case LD_VX_VY: {
+      chip->V[Y] = chip->V[Z];
+      break;
+    }
+    case ADD_VX_VY: {
+      uint16_t sum = chip->V[Y] + chip->V[Z];
+      chip->V[Y] = sum & 0xFF;
+      chip->V[0xF] = (sum > 0xFF) ? 1 : 0;
       break;
     }
     }
