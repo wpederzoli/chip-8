@@ -56,20 +56,48 @@ void handle_opcode(chip8_t *chip, uint16_t op, SDL_Renderer *renderer) {
   case CLS:
     printf("Clear screen\n");
     SDL_RenderClear(renderer);
-    // Since it is 2 bytes sized we move forward 2 steps.
-    chip->PC += 2;
     break;
   case RET:
     printf("Return to top stack address\n");
     chip->PC = chip->stack[chip->SP];
     chip->SP--;
-    break;
+    return;
   case JP: {
     uint16_t nnn = (Y << 8) | (Z << 4) | W;
+    printf("Jump to: %0x04X", nnn);
     chip->PC = nnn;
+    return;
+  }
+  case LD: {
+    chip->V[Y] = (Z << 4) | W;
+    break;
+  }
+  case ADD: {
+    uint8_t kk = (Z << 4) | W;
+    chip->V[Y] = chip->V[Y] + kk;
+    break;
+  }
+  case LOGICAL: {
+    switch (W) {
+    case OR: {
+      chip->V[Y] = chip->V[Y] | chip->V[Z];
+      break;
+    }
+    case AND: {
+      chip->V[Y] = chip->V[Y] & chip->V[Z];
+      break;
+    }
+    case XOR: {
+      chip->V[Y] = chip->V[Y] ^ chip->V[Z];
+      break;
+    }
+    }
     break;
   }
   }
+
+  // Since it is 2 bytes sized we move forward 2 steps.
+  chip->PC += 2;
 }
 
 uint16_t chip_step(chip8_t *chip) {
