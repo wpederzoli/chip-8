@@ -14,6 +14,9 @@
 
 #define ROM_MAX_S (0xFFF - 0x200 + 1)
 
+#define DISPLAY_W 64
+#define DISPLAY_H 32
+
 #include <stdlib.h>
 
 typedef struct {
@@ -23,11 +26,14 @@ typedef struct {
   uint16_t PC;            // Program Counter
   uint8_t SP;             // Stack pointer
   uint16_t stack[STACK_S];
+  uint8_t gtx[DISPLAY_H][DISPLAY_W]; // Display 64x32 pixels
+  uint8_t DT;                        // Delay timer
 } chip8_t;
 
 chip8_t *init_chip();
 int load_rom(chip8_t *chip, const char *path);
 uint16_t chip_step(chip8_t *chip);
 void handle_opcode(chip8_t *chip, uint16_t opcode, SDL_Renderer *renderer);
+void draw_display(chip8_t *chip, SDL_Renderer *renderer);
 
 #endif

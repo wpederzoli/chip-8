@@ -23,5 +23,13 @@
 #define XOR 0x3
 //Set Vx = Vx + Vy, set VF = carry.
 #define ADD_VX_VY 0x4
+//Display n-byte sprite starting at memory location I at (Vx, Vy), set VF = collision.
+#define DRW 0xD
+//Skip next instruction iv Vx == kk
+#define SE 0x3
+//Set Vx to DT
+#define LD_VX_DT 0xF
+//Set I = nnn
+#define LD_I_ADDR 0xA
 
 #endif
