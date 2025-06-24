@@ -58,7 +58,7 @@ void handle_opcode(chip8_t *chip, uint16_t op, SDL_Renderer *renderer) {
   switch (X) {
   case CLS:
     printf("Clear screen\n");
-    memset(chip->gtx, 0, sizeof(chip->gtx)); // Limpiar buffer interno
+    memset(chip->gtx, 0, sizeof(chip->gtx));
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     break;
@@ -106,9 +106,8 @@ void handle_opcode(chip8_t *chip, uint16_t op, SDL_Renderer *renderer) {
           }
           chip->gtx[curr_y][curr_x] ^= 1;
 
-          // Dibuja el punto directamente (el escalado lo maneja SDL)
           if (chip->gtx[curr_y][curr_x]) {
-            SDL_FRect rect = {curr_x *10.f, curr_y*10.f, 10.f, 10.f};
+            SDL_FRect rect = {curr_x * 10.f, curr_y * 10.f, 10.f, 10.f};
             SDL_RenderFillRect(renderer, &rect);
           }
         }
